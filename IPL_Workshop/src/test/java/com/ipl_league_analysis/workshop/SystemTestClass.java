@@ -1,5 +1,8 @@
 package com.ipl_league_analysis.workshop;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -25,15 +28,33 @@ public class SystemTestClass {
 	}
 
 	// Start
+	@Ignore
 	@Test
 	public void given_Batsman_Data_CSV_File_Returns_Correct_Number_Of_Records() {
 		try {
-			IplAnalyzer.loadBatsmanData(IPL_BATTING_SHEET);
-//			System.out.println(numberOfEntries);
-//			Assert.assertEquals(101, numberOfEntries);
-			Assert.assertTrue(true);
+			int numberOfEntries = IplAnalyzer.loadBatsmanData(IPL_BATTING_SHEET);
+			System.out.println(numberOfEntries);
+			Assert.assertEquals(101, numberOfEntries);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
+	@Test
+	public void given_Batsman_Data_CSV_File_Returns_Top_Batting_Averages() {
+		try {
+			List<Double> battingAvgList = IplAnalyzer.returnsTopBattingAverages(IPL_BATTING_SHEET);
+			List<Double> checkList = new ArrayList<>();
+			checkList.add(83.2);
+			checkList.add(69.2);
+			checkList.add(56.66);
+			checkList.add(55.62);
+			checkList.add(53.9);
+
+			Assert.assertEquals(checkList, battingAvgList);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }
