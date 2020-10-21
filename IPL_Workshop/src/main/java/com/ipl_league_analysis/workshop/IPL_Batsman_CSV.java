@@ -31,8 +31,8 @@ public class IPL_Batsman_CSV {
 //	@CsvBindByName(column = "BF", required = true)
 //	public int bf;
 //
-//	@CsvBindByName(column = "SR", required = true)
-//	public double sr;
+	@CsvBindByName(column = "SR", required = true)
+	public double sr;
 //
 //	@CsvBindByName(column = "100", required = true)
 //	public int hundreds;
@@ -82,9 +82,9 @@ public class IPL_Batsman_CSV {
 //		return bf;
 //	}
 //
-//	public double getSr() {
-//		return sr;
-//	}
+	public double getSr() {
+		return sr;
+	}
 //
 //	public int getHundreds() {
 //		return hundreds;

@@ -40,6 +40,7 @@ public class SystemTestClass {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void given_Batsman_Data_CSV_File_Returns_Top_Batting_Averages() {
 		try {
@@ -52,6 +53,23 @@ public class SystemTestClass {
 			checkList.add(53.9);
 
 			Assert.assertEquals(checkList, battingAvgList);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void given_Batsman_Data_CSV_File_Returns_Top_Strike_Rates() {
+		try {
+			List<Double> strikeRateList = IplAnalyzer.returnsTopStrikeRates(IPL_BATTING_SHEET);
+			List<Double> checkList = new ArrayList<>();
+			checkList.add(333.33);
+			checkList.add(204.81);
+			checkList.add(200.0);
+			checkList.add(191.42);
+			checkList.add(175.0);
+
+			Assert.assertEquals(checkList, strikeRateList);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

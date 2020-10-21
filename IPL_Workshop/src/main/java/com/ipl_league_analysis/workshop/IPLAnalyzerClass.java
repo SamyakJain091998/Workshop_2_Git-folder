@@ -20,6 +20,7 @@ import com.opencsv.bean.CsvToBeanBuilder;
 
 public class IPLAnalyzerClass {
 	private List<Double> topAverageList = new ArrayList<>();
+	private List<Double> topStrikeRateList = new ArrayList<>();
 
 	public int loadBatsmanData(String csvFilePath) {
 		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
@@ -63,4 +64,28 @@ public class IPLAnalyzerClass {
 		return null;
 	}
 
+	public List<Double> returnsTopStrikeRates(String csvFilePath) {
+		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))) {
+			CsvToBean<IPL_Batsman_CSV> csvToBean = new CsvToBeanBuilder(reader).withType(IPL_Batsman_CSV.class)
+					.withIgnoreLeadingWhiteSpace(true).build();
+			Iterator<IPL_Batsman_CSV> csvIterator = csvToBean.iterator();
+//			double MAX = -1;
+			Double strikeRateDouble;
+			IPL_Batsman_CSV batsmanObj = null;
+//			String invalidString = "-";
+			while (csvIterator.hasNext()) {
+				batsmanObj = csvIterator.next();
+				strikeRateDouble = batsmanObj.getSr();
+				topStrikeRateList.add(strikeRateDouble);
+			}
+			Collections.sort(topStrikeRateList, Collections.reverseOrder());
+			List<Double> top5StrikeRateList = topStrikeRateList.subList(0, 5);
+			return top5StrikeRateList;
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		}
+		return null;
+		// TODO Auto-generated method stub
+	}
 }
