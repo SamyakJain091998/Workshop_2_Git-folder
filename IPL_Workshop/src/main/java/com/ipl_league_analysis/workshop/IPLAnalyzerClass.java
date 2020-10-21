@@ -86,4 +86,30 @@ public class IPLAnalyzerClass {
 		}
 		return null;
 	}
+
+	public List<String> returnsTopBoundaryHitters(String csvFilePath) {
+		// TODO Auto-generated method stub
+		Iterator<IPL_Batsman_CSV> csvIterator = returnsIteratorOfCSVFile(csvFilePath);
+		IPL_Batsman_CSV batsmanObj = null;
+		int maxFours = -1;
+		int maxSixes = -1;
+		String playerNameWithMostFours = null;
+		String playerNameWithMostSixes = null;
+		List<String> playerList = new ArrayList<>();
+
+		while (csvIterator.hasNext()) {
+			batsmanObj = csvIterator.next();
+			if (batsmanObj.getFours() > maxFours) {
+				maxFours = batsmanObj.getFours();
+				playerNameWithMostFours = batsmanObj.getPlayer();
+			}
+			if (batsmanObj.getSixes() > maxSixes) {
+				maxSixes = batsmanObj.getSixes();
+				playerNameWithMostSixes = batsmanObj.getPlayer();
+			}
+		}
+		playerList.add(playerNameWithMostFours);
+		playerList.add(playerNameWithMostSixes);
+		return playerList;
+	}
 }

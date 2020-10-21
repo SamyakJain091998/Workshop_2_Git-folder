@@ -58,6 +58,7 @@ public class SystemTestClass {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void given_Batsman_Data_CSV_File_Returns_Top_Strike_Rates() {
 		try {
@@ -70,6 +71,17 @@ public class SystemTestClass {
 			checkList.add(175.0);
 
 			Assert.assertEquals(checkList, strikeRateList);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void given_Batsman_Data_CSV_File_Returns_Top_Fours_And_Sixes_Hitter() {
+		try {
+			List<String> strikeRateList = IplAnalyzer.returnsTopBoundaryHitters(IPL_BATTING_SHEET);
+			Assert.assertEquals("Shikhar Dhawan", strikeRateList.get(0));
+			Assert.assertEquals("Andre Russell", strikeRateList.get(1));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -7,8 +7,8 @@ public class IPL_Batsman_CSV {
 	@CsvBindByName(column = "POS", required = true)
 	public int pos;
 
-//	@CsvBindByName(column = "PLAYER", required = true)
-//	public String player;
+	@CsvBindByName(column = "PLAYER", required = true)
+	public String player;
 //
 //	@CsvBindByName(column = "Mat", required = true)
 //	public int mat;
@@ -40,19 +40,20 @@ public class IPL_Batsman_CSV {
 //	@CsvBindByName(column = "50", required = true)
 //	public int fifties;
 //
-//	@CsvBindByName(column = "4s", required = true)
-//	public int fours;
-//
-//	@CsvBindByName(column = "6s", required = true)
-//	public int sixes;
+	@CsvBindByName(column = "4s", required = true)
+	public int fours;
+
+	@CsvBindByName(column = "6s", required = true)
+	public int sixes;
 
 	public int getPos() {
 		return pos;
 	}
 
-//	public String getPlayer() {
-//		return player;
-//	}
+	public String getPlayer() {
+		return player;
+	}
+
 //
 //	public int getMat() {
 //		return mat;
@@ -77,6 +78,7 @@ public class IPL_Batsman_CSV {
 	public String getAvg() {
 		return avg;
 	}
+
 //
 //	public int getBf() {
 //		return bf;
@@ -85,6 +87,7 @@ public class IPL_Batsman_CSV {
 	public double getSr() {
 		return sr;
 	}
+
 //
 //	public int getHundreds() {
 //		return hundreds;
@@ -94,13 +97,13 @@ public class IPL_Batsman_CSV {
 //		return fifties;
 //	}
 //
-//	public int getFours() {
-//		return fours;
-//	}
-//
-//	public int getSixes() {
-//		return sixes;
-//	}
+	public int getFours() {
+		return fours;
+	}
+
+	public int getSixes() {
+		return sixes;
+	}
 //
 //	@Override
 //	public String toString() {
