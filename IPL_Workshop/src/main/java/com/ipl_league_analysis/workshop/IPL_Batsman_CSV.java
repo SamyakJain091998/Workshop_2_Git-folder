@@ -28,8 +28,8 @@ public class IPL_Batsman_CSV {
 	@CsvBindByName(column = "Avg", required = true)
 	public String avg;
 //
-//	@CsvBindByName(column = "BF", required = true)
-//	public int bf;
+	@CsvBindByName(column = "BF", required = true)
+	public int bf;
 //
 	@CsvBindByName(column = "SR", required = true)
 	public double sr;
@@ -80,9 +80,10 @@ public class IPL_Batsman_CSV {
 	}
 
 //
-//	public int getBf() {
-//		return bf;
-//	}
+	public int getBf() {
+		return bf;
+	}
+
 //
 	public double getSr() {
 		return sr;

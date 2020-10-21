@@ -76,6 +76,7 @@ public class SystemTestClass {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void given_Batsman_Data_CSV_File_Returns_Top_Fours_And_Sixes_Hitter() {
 		try {
@@ -87,4 +88,14 @@ public class SystemTestClass {
 		}
 	}
 
+	@Test
+	public void given_Batsman_Data_CSV_File_Returns_Player_With_Best_Striking_Rate_WithBoundaries() {
+		try {
+			String player = IplAnalyzer.returnsTopBoundaryStrikingRatePlayer(IPL_BATTING_SHEET);
+			System.out.println(player);
+			Assert.assertEquals(true, true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

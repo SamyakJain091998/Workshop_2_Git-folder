@@ -112,4 +112,22 @@ public class IPLAnalyzerClass {
 		playerList.add(playerNameWithMostSixes);
 		return playerList;
 	}
+
+	public String returnsTopBoundaryStrikingRatePlayer(String csvFilePath) {
+		Iterator<IPL_Batsman_CSV> csvIterator = returnsIteratorOfCSVFile(csvFilePath);
+		// TODO Auto-generated method stub
+		IPL_Batsman_CSV batsmanObj = null;
+		double maxConditionalStrikerate = 0.0;
+		String player = null;
+		while (csvIterator.hasNext()) {
+			batsmanObj = csvIterator.next();
+			double localConditionalStrikeRate = 4 * batsmanObj.getFours() + 6 * batsmanObj.getSixes();
+			localConditionalStrikeRate = localConditionalStrikeRate / batsmanObj.getBf();
+			if (localConditionalStrikeRate > maxConditionalStrikerate) {
+				maxConditionalStrikerate = localConditionalStrikeRate;
+				player = batsmanObj.getPlayer();
+			}
+		}
+		return player;
+	}
 }
