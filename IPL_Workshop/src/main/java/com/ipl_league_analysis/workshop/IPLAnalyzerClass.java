@@ -39,53 +39,51 @@ public class IPLAnalyzerClass {
 	}
 
 	public List<Double> returnsTopBattingAverages(String csvFilePath) {
-		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))) {
-			CsvToBean<IPL_Batsman_CSV> csvToBean = new CsvToBeanBuilder(reader).withType(IPL_Batsman_CSV.class)
-					.withIgnoreLeadingWhiteSpace(true).build();
-			Iterator<IPL_Batsman_CSV> csvIterator = csvToBean.iterator();
-//			double MAX = -1;
-			Double avgDouble;
-			IPL_Batsman_CSV batsmanObj = null;
-			String invalidString = "-";
-			while (csvIterator.hasNext()) {
-				batsmanObj = csvIterator.next();
-				if (!(invalidString.equals(batsmanObj.getAvg()))) {
-					avgDouble = Double.parseDouble(batsmanObj.getAvg());
-					topAverageList.add(avgDouble);
-				}
+		Iterator<IPL_Batsman_CSV> csvIterator = returnsIteratorOfCSVFile(csvFilePath);
+//		double MAX = -1;
+		Double avgDouble;
+		IPL_Batsman_CSV batsmanObj = null;
+		String invalidString = "-";
+		while (csvIterator.hasNext()) {
+			batsmanObj = csvIterator.next();
+			if (!(invalidString.equals(batsmanObj.getAvg()))) {
+				avgDouble = Double.parseDouble(batsmanObj.getAvg());
+				topAverageList.add(avgDouble);
 			}
-			Collections.sort(topAverageList, Collections.reverseOrder());
-			List<Double> top5AvgList = topAverageList.subList(0, 5);
-			return top5AvgList;
-		} catch (Exception e) {
-			e.printStackTrace();
-			// TODO: handle exception
 		}
-		return null;
+		return returnsReverseSortedSublist(topAverageList);
 	}
 
 	public List<Double> returnsTopStrikeRates(String csvFilePath) {
-		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))) {
+		Iterator<IPL_Batsman_CSV> csvIterator = returnsIteratorOfCSVFile(csvFilePath);
+//		double MAX = -1;
+		Double strikeRateDouble;
+		IPL_Batsman_CSV batsmanObj = null;
+//		String invalidString = "-";
+		while (csvIterator.hasNext()) {
+			batsmanObj = csvIterator.next();
+			strikeRateDouble = batsmanObj.getSr();
+			topStrikeRateList.add(strikeRateDouble);
+		}
+		return returnsReverseSortedSublist(topStrikeRateList);
+	}
+
+	public List<Double> returnsReverseSortedSublist(List<Double> toppersList) {
+		Collections.sort(toppersList, Collections.reverseOrder());
+		toppersList = toppersList.subList(0, 5);
+		return toppersList;
+	}
+
+	public Iterator<IPL_Batsman_CSV> returnsIteratorOfCSVFile(String csvFilePath) {
+		try {
+			Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));
 			CsvToBean<IPL_Batsman_CSV> csvToBean = new CsvToBeanBuilder(reader).withType(IPL_Batsman_CSV.class)
 					.withIgnoreLeadingWhiteSpace(true).build();
 			Iterator<IPL_Batsman_CSV> csvIterator = csvToBean.iterator();
-//			double MAX = -1;
-			Double strikeRateDouble;
-			IPL_Batsman_CSV batsmanObj = null;
-//			String invalidString = "-";
-			while (csvIterator.hasNext()) {
-				batsmanObj = csvIterator.next();
-				strikeRateDouble = batsmanObj.getSr();
-				topStrikeRateList.add(strikeRateDouble);
-			}
-			Collections.sort(topStrikeRateList, Collections.reverseOrder());
-			List<Double> top5StrikeRateList = topStrikeRateList.subList(0, 5);
-			return top5StrikeRateList;
+			return csvIterator;
 		} catch (Exception e) {
-			e.printStackTrace();
 			// TODO: handle exception
 		}
 		return null;
-		// TODO Auto-generated method stub
 	}
 }
