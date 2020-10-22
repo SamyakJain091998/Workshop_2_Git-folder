@@ -7,8 +7,8 @@ public class IPL_Bowling_CSV {
 	@CsvBindByName(column = "POS", required = true)
 	public int pos;
 
-//	@CsvBindByName(column = "PLAYER", required = true)
-//	public String player;
+	@CsvBindByName(column = "PLAYER", required = true)
+	public String player;
 
 //	@CsvBindByName(column = "Mat", required = true)
 //	public int mat;
@@ -35,24 +35,28 @@ public class IPL_Bowling_CSV {
 		return pos;
 	}
 
-//	public String getPlayer() {
-//		return player;
-//	}
+	public String getPlayer() {
+		return player;
+	}
 
 	public String getAvg() {
 		return avg;
 	}
 
-//	@CsvBindByName(column = "Econ", required = true)
-//	public double econ;
+	@CsvBindByName(column = "Econ", required = true)
+	public double econ;
 //
 	@CsvBindByName(column = "SR", required = true)
 	public String sr;
 
-	public <E> String getSr() {
+	public String getSr() {
 		return sr;
 	}
-//
+
+	public double getEcon() {
+		return econ;
+	}
+
 //	@CsvBindByName(column = "4w", required = true)
 //	public int fourWicketHaul;
 //

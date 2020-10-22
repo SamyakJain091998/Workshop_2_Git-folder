@@ -24,6 +24,7 @@ public class IPLAnalyzerClass {
 	private List<Double> topAverageList = null;
 	private List<Double> topStrikeRateList = null;
 	List<IPL_Batsman_CSV> IPLBatsmanList = null;
+	List<IPL_Bowling_CSV> IPLBowlerList = null;
 
 	public int loadBatsmanData(String csvFilePath) {
 		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
@@ -207,30 +208,67 @@ public class IPLAnalyzerClass {
 		// TODO Auto-generated method stub
 	}
 
+	public String returnsBestBattingEconomyPlayer(String csvFilePath) throws CSVException, IPLException {
+		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
+			ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
+			IPLBatsmanList = csvBuilder.returnsListToTheLoadingFunction(reader, IPL_Batsman_CSV.class);
+
+			Comparator<IPL_Batsman_CSV> iplComparator = Comparator.comparing(IPL_Batsman_CSV::getRuns)
+					.thenComparing(IPL_Batsman_CSV::getAvg);
+
+			return getSortedDataBasisParameter(iplComparator, IPLBatsmanList, IPL_Batsman_CSV.class);
+		} catch (IOException e) {
+			// TODO: handle exception
+			throw new IPLException(e.getMessage(), IPLException.ExceptionType.FILE_PROBLEM);
+		} catch (RuntimeException e) {
+			throw new IPLException(e.getMessage(), IPLException.ExceptionType.CSV_FILE_INTERNAL_ISSUES);
+		}
+		// TODO Auto-generated method stub
+	}
+
+	public String returnsBestEconomyRatePlayer(String csvFilePath) throws CSVException, IPLException {
+		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
+			ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
+			IPLBowlerList = csvBuilder.returnsListToTheLoadingFunction(reader, IPL_Bowling_CSV.class);
+
+			Comparator<IPL_Bowling_CSV> iplComparator = Comparator.comparing(IPL_Bowling_CSV::getEcon);
+
+			return getSortedDataBasisParameter(iplComparator, IPLBowlerList, IPL_Bowling_CSV.class);
+		} catch (IOException e) {
+			// TODO: handle exception
+			throw new IPLException(e.getMessage(), IPLException.ExceptionType.FILE_PROBLEM);
+		} catch (RuntimeException e) {
+			throw new IPLException(e.getMessage(), IPLException.ExceptionType.CSV_FILE_INTERNAL_ISSUES);
+		}
+	}
+
 	private <E> String getSortedDataBasisParameter(Comparator<E> iplComparator, List<E> processedList,
 			Class<E> classType) throws IPLException {
 		// TODO Auto-generated method stub
 		if (processedList == null || processedList.size() == 0) {
+			System.out.println("here");
 			throw new IPLException("No Census Data", IPLException.ExceptionType.NO_CENSUS_DATA);
 		}
-		this.sortList(iplComparator);
-
-		return IPLBatsmanList.get(0).getPlayer();
+		this.sortList(iplComparator, processedList);
+		if (classType.equals(IPL_Batsman_CSV.class)) {
+			return IPLBatsmanList.get(0).getPlayer();
+		} else {
+			return IPLBowlerList.get(0).getPlayer();
+		}
 	}
 
-	private <E> void sortList(Comparator<E> iplComparator) {
+	private <E> void sortList(Comparator<E> iplComparator, List<E> givenList) {
 		// TODO Auto-generated method stub
-		for (int i = 0; i < IPLBatsmanList.size() - 1; i++) {
-			for (int j = 0; j < IPLBatsmanList.size() - i - 1; j++) {
-				E iplParameter1 = (E) IPLBatsmanList.get(j);
-				E iplParameter2 = (E) IPLBatsmanList.get(j + 1);
+		for (int i = 0; i < givenList.size() - 1; i++) {
+			for (int j = 0; j < givenList.size() - i - 1; j++) {
+				E iplParameter1 = (E) givenList.get(j);
+				E iplParameter2 = (E) givenList.get(j + 1);
 				if (iplComparator.compare(iplParameter1, iplParameter2) < 0) {
-					IPLBatsmanList.set(j, (IPL_Batsman_CSV) iplParameter2);
-					IPLBatsmanList.set(j + 1, (IPL_Batsman_CSV) iplParameter1);
+					givenList.set(j, (E) iplParameter2);
+					givenList.set(j + 1, (E) iplParameter1);
 				}
 			}
 		}
 		// TODO Auto-generated method stub
 	}
-
 }
