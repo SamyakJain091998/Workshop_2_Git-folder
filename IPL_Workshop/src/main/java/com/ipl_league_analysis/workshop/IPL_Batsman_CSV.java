@@ -19,8 +19,8 @@ public class IPL_Batsman_CSV {
 //	@CsvBindByName(column = "NO", required = true)
 //	public int no;
 //
-//	@CsvBindByName(column = "Runs", required = true)
-//	public int runs;
+	@CsvBindByName(column = "Runs", required = true)
+	public int runs;
 //
 //	@CsvBindByName(column = "HS", required = true)
 //	public int hs;
@@ -67,9 +67,9 @@ public class IPL_Batsman_CSV {
 //		return no;
 //	}
 //
-//	public int getRuns() {
-//		return runs;
-//	}
+	public int getRuns() {
+		return runs;
+	}
 //
 //	public int getHs() {
 //		return hs;

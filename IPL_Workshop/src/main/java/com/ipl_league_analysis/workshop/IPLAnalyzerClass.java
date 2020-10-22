@@ -15,12 +15,15 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import static com.CSVExceptionJar.CSVException.CSVExceptionType.UNABLE_TO_PARSE;
+
+import com.CSVExceptionJar.CSVException;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 
 public class IPLAnalyzerClass {
 	private List<Double> topAverageList = new ArrayList<>();
 	private List<Double> topStrikeRateList = new ArrayList<>();
+	List<IPL_Batsman_CSV> IPLBatsmanList = null;
 
 	public int loadBatsmanData(String csvFilePath) {
 		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
@@ -152,4 +155,49 @@ public class IPLAnalyzerClass {
 		}
 		return null;
 	}
+
+	public String returnsTopScoringAndAvgPlayer(String csvFilePath) throws CSVException, IPLException {
+		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
+			ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
+			IPLBatsmanList = csvBuilder.returnsListToTheLoadingFunction(reader, IPL_Batsman_CSV.class);
+
+			Comparator<IPL_Batsman_CSV> iplComparator = Comparator.comparing(IPL_Batsman_CSV::getRuns)
+					.thenComparing(IPL_Batsman_CSV::getAvg);
+
+			return getSortedDataBasisParameter(iplComparator, IPLBatsmanList, IPL_Batsman_CSV.class);
+		} catch (IOException e) {
+			// TODO: handle exception
+			throw new IPLException(e.getMessage(), IPLException.ExceptionType.FILE_PROBLEM);
+		} catch (RuntimeException e) {
+			throw new IPLException(e.getMessage(), IPLException.ExceptionType.CSV_FILE_INTERNAL_ISSUES);
+		}
+		// TODO Auto-generated method stub
+	}
+
+	private <E> String getSortedDataBasisParameter(Comparator<E> iplComparator, List<E> processedList,
+			Class<E> classType) throws IPLException {
+		// TODO Auto-generated method stub
+		if (processedList == null || processedList.size() == 0) {
+			throw new IPLException("No Census Data", IPLException.ExceptionType.NO_CENSUS_DATA);
+		}
+		this.sortList(iplComparator);
+
+		return IPLBatsmanList.get(0).getPlayer();
+	}
+
+	private <E> void sortList(Comparator<E> iplComparator) {
+		// TODO Auto-generated method stub
+		for (int i = 0; i < IPLBatsmanList.size() - 1; i++) {
+			for (int j = 0; j < IPLBatsmanList.size() - i - 1; j++) {
+				E iplParameter1 = (E) IPLBatsmanList.get(j);
+				E iplParameter2 = (E) IPLBatsmanList.get(j + 1);
+				if (iplComparator.compare(iplParameter1, iplParameter2) < 0) {
+					IPLBatsmanList.set(j, (IPL_Batsman_CSV) iplParameter2);
+					IPLBatsmanList.set(j + 1, (IPL_Batsman_CSV) iplParameter1);
+				}
+			}
+		}
+		// TODO Auto-generated method stub
+	}
+
 }
