@@ -3,10 +3,10 @@ package com.ipl_league_analysis.workshop;
 import com.opencsv.bean.CsvBindByName;
 
 public class IPL_Bowling_CSV {
-	
+
 	@CsvBindByName(column = "POS", required = true)
 	public int pos;
-	
+
 //	@CsvBindByName(column = "PLAYER", required = true)
 //	public String player;
 
@@ -30,7 +30,7 @@ public class IPL_Bowling_CSV {
 
 	@CsvBindByName(column = "Avg", required = true)
 	public String avg;
-	
+
 	public int getPos() {
 		return pos;
 	}
@@ -46,8 +46,12 @@ public class IPL_Bowling_CSV {
 //	@CsvBindByName(column = "Econ", required = true)
 //	public double econ;
 //
-//	@CsvBindByName(column = "SR", required = true)
-//	public double sr;
+	@CsvBindByName(column = "SR", required = true)
+	public String sr;
+
+	public <E> String getSr() {
+		return sr;
+	}
 //
 //	@CsvBindByName(column = "4w", required = true)
 //	public int fourWicketHaul;

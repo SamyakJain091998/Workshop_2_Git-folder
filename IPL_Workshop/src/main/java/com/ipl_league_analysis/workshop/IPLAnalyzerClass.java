@@ -22,7 +22,7 @@ import com.opencsv.bean.CsvToBeanBuilder;
 
 public class IPLAnalyzerClass {
 	private List<Double> topAverageList = null;
-	private List<Double> topStrikeRateList = new ArrayList<>();
+	private List<Double> topStrikeRateList = null;
 	List<IPL_Batsman_CSV> IPLBatsmanList = null;
 
 	public int loadBatsmanData(String csvFilePath) {
@@ -75,16 +75,29 @@ public class IPLAnalyzerClass {
 		return returnsReverseSortedSublist(topAverageList);
 	}
 
-	public List<Double> returnsTopStrikeRates(String csvFilePath) {
-		Iterator<IPL_Batsman_CSV> csvIterator = returnsIteratorOfCSVFile(csvFilePath, IPL_Batsman_CSV.class);
+	public <E> List<Double> returnsTopStrikeRates(String csvFilePath, Class classType) {
+		topStrikeRateList = new ArrayList<>();
+		Iterator<E> csvIterator = returnsIteratorOfCSVFile(csvFilePath, classType);
 //		double MAX = -1;
-		Double strikeRateDouble;
-		IPL_Batsman_CSV batsmanObj = null;
-//		String invalidString = "-";
-		while (csvIterator.hasNext()) {
-			batsmanObj = csvIterator.next();
-			strikeRateDouble = batsmanObj.getSr();
-			topStrikeRateList.add(strikeRateDouble);
+		Double avgDouble;
+		E playerObj = null;
+		String invalidString = "-";
+		if (classType.equals(IPL_Batsman_CSV.class)) {
+			while (csvIterator.hasNext()) {
+				playerObj = csvIterator.next();
+				if (!(invalidString.equals(((IPL_Batsman_CSV) playerObj).getSr()))) {
+					avgDouble = Double.parseDouble(((IPL_Batsman_CSV) playerObj).getSr());
+					topStrikeRateList.add(avgDouble);
+				}
+			}
+		} else {
+			while (csvIterator.hasNext()) {
+				playerObj = csvIterator.next();
+				if (!(invalidString.equals(((IPL_Bowling_CSV) playerObj).getSr()))) {
+					avgDouble = Double.parseDouble(((IPL_Bowling_CSV) playerObj).getSr());
+					topStrikeRateList.add(avgDouble);
+				}
+			}
 		}
 		return returnsReverseSortedSublist(topStrikeRateList);
 	}
@@ -151,7 +164,9 @@ public class IPLAnalyzerClass {
 				continue;
 			}
 			double localAvg = Double.parseDouble(batsmanObj.getAvg());
-			localAvg += batsmanObj.getSr();
+			double sr = Double.parseDouble(batsmanObj.getSr());
+
+			localAvg += sr;
 			localAvg /= 2;
 			if (localAvg > maxAvgAndStrikeRate) {
 				maxAvgAndStrikeRate = localAvg;
