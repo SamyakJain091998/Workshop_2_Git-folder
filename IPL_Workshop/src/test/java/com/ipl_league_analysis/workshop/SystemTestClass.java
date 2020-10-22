@@ -112,6 +112,7 @@ public class SystemTestClass {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void given_Batsman_Data_CSV_File_Returns_Player_With_Max_Runs_Best_Avg() {
 		try {
@@ -129,4 +130,20 @@ public class SystemTestClass {
 		}
 	}
 
+	@Test
+	public void given_Bowling_Data_CSV_File_Returns_Top_Bowling_Averages() {
+		try {
+			List<Double> bowlingAvgList = IplAnalyzer.returnsTopBowlingAverages(IPL_BOWLING_SHEET);
+			List<Double> checkList = new ArrayList<>();
+			checkList.add(166.0);
+			checkList.add(118.0);
+			checkList.add(94.25);
+			checkList.add(91.5);
+			checkList.add(77.66);
+
+			Assert.assertEquals(checkList, bowlingAvgList);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

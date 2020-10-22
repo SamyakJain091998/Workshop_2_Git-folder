@@ -21,7 +21,7 @@ import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 
 public class IPLAnalyzerClass {
-	private List<Double> topAverageList = new ArrayList<>();
+	private List<Double> topAverageList = null;
 	private List<Double> topStrikeRateList = new ArrayList<>();
 	List<IPL_Batsman_CSV> IPLBatsmanList = null;
 
@@ -42,7 +42,8 @@ public class IPLAnalyzerClass {
 	}
 
 	public List<Double> returnsTopBattingAverages(String csvFilePath) {
-		Iterator<IPL_Batsman_CSV> csvIterator = returnsIteratorOfCSVFile(csvFilePath);
+		topAverageList = new ArrayList<>();
+		Iterator<IPL_Batsman_CSV> csvIterator = returnsIteratorOfCSVFile(csvFilePath, IPL_Batsman_CSV.class);
 //		double MAX = -1;
 		Double avgDouble;
 		IPL_Batsman_CSV batsmanObj = null;
@@ -57,8 +58,25 @@ public class IPLAnalyzerClass {
 		return returnsReverseSortedSublist(topAverageList);
 	}
 
+	public List<Double> returnsTopBowlingAverages(String csvFilePath) {
+		topAverageList = new ArrayList<>();
+		Iterator<IPL_Bowling_CSV> csvIterator = returnsIteratorOfCSVFile(csvFilePath, IPL_Bowling_CSV.class);
+//		double MAX = -1;
+		Double avgDouble;
+		IPL_Bowling_CSV bowlerObj = null;
+		String invalidString = "-";
+		while (csvIterator.hasNext()) {
+			bowlerObj = csvIterator.next();
+			if (!(invalidString.equals(bowlerObj.getAvg()))) {
+				avgDouble = Double.parseDouble(bowlerObj.getAvg());
+				topAverageList.add(avgDouble);
+			}
+		}
+		return returnsReverseSortedSublist(topAverageList);
+	}
+
 	public List<Double> returnsTopStrikeRates(String csvFilePath) {
-		Iterator<IPL_Batsman_CSV> csvIterator = returnsIteratorOfCSVFile(csvFilePath);
+		Iterator<IPL_Batsman_CSV> csvIterator = returnsIteratorOfCSVFile(csvFilePath, IPL_Batsman_CSV.class);
 //		double MAX = -1;
 		Double strikeRateDouble;
 		IPL_Batsman_CSV batsmanObj = null;
@@ -79,7 +97,7 @@ public class IPLAnalyzerClass {
 
 	public List<String> returnsTopBoundaryHitters(String csvFilePath) {
 		// TODO Auto-generated method stub
-		Iterator<IPL_Batsman_CSV> csvIterator = returnsIteratorOfCSVFile(csvFilePath);
+		Iterator<IPL_Batsman_CSV> csvIterator = returnsIteratorOfCSVFile(csvFilePath, IPL_Batsman_CSV.class);
 		IPL_Batsman_CSV batsmanObj = null;
 		int maxFours = -1;
 		int maxSixes = -1;
@@ -104,7 +122,7 @@ public class IPLAnalyzerClass {
 	}
 
 	public String returnsTopBoundaryStrikingRatePlayer(String csvFilePath) {
-		Iterator<IPL_Batsman_CSV> csvIterator = returnsIteratorOfCSVFile(csvFilePath);
+		Iterator<IPL_Batsman_CSV> csvIterator = returnsIteratorOfCSVFile(csvFilePath, IPL_Batsman_CSV.class);
 		// TODO Auto-generated method stub
 		IPL_Batsman_CSV batsmanObj = null;
 		double maxConditionalStrikerate = 0.0;
@@ -122,7 +140,7 @@ public class IPLAnalyzerClass {
 	}
 
 	public String returnsTopAvgAndStrikeRatePlayer(String csvFilePath) {
-		Iterator<IPL_Batsman_CSV> csvIterator = returnsIteratorOfCSVFile(csvFilePath);
+		Iterator<IPL_Batsman_CSV> csvIterator = returnsIteratorOfCSVFile(csvFilePath, IPL_Batsman_CSV.class);
 		IPL_Batsman_CSV batsmanObj = null;
 		String invalidInput = "-";
 		double maxAvgAndStrikeRate = -1;
@@ -143,12 +161,12 @@ public class IPLAnalyzerClass {
 		return playerName;
 	}
 
-	public Iterator<IPL_Batsman_CSV> returnsIteratorOfCSVFile(String csvFilePath) {
+	public <E> Iterator<E> returnsIteratorOfCSVFile(String csvFilePath, Class classType) {
 		try {
 			Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));
-			CsvToBean<IPL_Batsman_CSV> csvToBean = new CsvToBeanBuilder(reader).withType(IPL_Batsman_CSV.class)
-					.withIgnoreLeadingWhiteSpace(true).build();
-			Iterator<IPL_Batsman_CSV> csvIterator = csvToBean.iterator();
+			CsvToBean<E> csvToBean = new CsvToBeanBuilder(reader).withType(classType).withIgnoreLeadingWhiteSpace(true)
+					.build();
+			Iterator<E> csvIterator = csvToBean.iterator();
 			return csvIterator;
 		} catch (Exception e) {
 			// TODO: handle exception
