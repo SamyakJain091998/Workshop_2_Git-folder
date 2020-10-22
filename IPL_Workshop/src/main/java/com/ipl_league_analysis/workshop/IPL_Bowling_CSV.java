@@ -45,4 +45,5 @@ public class IPL_Bowling_CSV {
 				+ ", wkts=" + wkts + ", bbi=" + bbi + ", avg=" + avg + ", econ=" + econ + ", sr=" + sr
 				+ ", fourWicketHaul=" + fourWicketHaul + ", sixWicketHaul=" + sixWicketHaul + "]";
 	}
+	
 }

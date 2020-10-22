@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
+import static com.CSVExceptionJar.CSVException.CSVExceptionType.UNABLE_TO_PARSE;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 
@@ -74,19 +74,6 @@ public class IPLAnalyzerClass {
 		return toppersList;
 	}
 
-	public Iterator<IPL_Batsman_CSV> returnsIteratorOfCSVFile(String csvFilePath) {
-		try {
-			Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));
-			CsvToBean<IPL_Batsman_CSV> csvToBean = new CsvToBeanBuilder(reader).withType(IPL_Batsman_CSV.class)
-					.withIgnoreLeadingWhiteSpace(true).build();
-			Iterator<IPL_Batsman_CSV> csvIterator = csvToBean.iterator();
-			return csvIterator;
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		return null;
-	}
-
 	public List<String> returnsTopBoundaryHitters(String csvFilePath) {
 		// TODO Auto-generated method stub
 		Iterator<IPL_Batsman_CSV> csvIterator = returnsIteratorOfCSVFile(csvFilePath);
@@ -129,5 +116,40 @@ public class IPLAnalyzerClass {
 			}
 		}
 		return player;
+	}
+
+	public String returnsTopAvgAndStrikeRatePlayer(String csvFilePath) {
+		Iterator<IPL_Batsman_CSV> csvIterator = returnsIteratorOfCSVFile(csvFilePath);
+		IPL_Batsman_CSV batsmanObj = null;
+		String invalidInput = "-";
+		double maxAvgAndStrikeRate = -1;
+		String playerName = null;
+		while (csvIterator.hasNext()) {
+			batsmanObj = csvIterator.next();
+			if (invalidInput.equals(batsmanObj.getAvg())) {
+				continue;
+			}
+			double localAvg = Double.parseDouble(batsmanObj.getAvg());
+			localAvg += batsmanObj.getSr();
+			localAvg /= 2;
+			if (localAvg > maxAvgAndStrikeRate) {
+				maxAvgAndStrikeRate = localAvg;
+				playerName = batsmanObj.getPlayer();
+			}
+		}
+		return playerName;
+	}
+
+	public Iterator<IPL_Batsman_CSV> returnsIteratorOfCSVFile(String csvFilePath) {
+		try {
+			Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));
+			CsvToBean<IPL_Batsman_CSV> csvToBean = new CsvToBeanBuilder(reader).withType(IPL_Batsman_CSV.class)
+					.withIgnoreLeadingWhiteSpace(true).build();
+			Iterator<IPL_Batsman_CSV> csvIterator = csvToBean.iterator();
+			return csvIterator;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return null;
 	}
 }
