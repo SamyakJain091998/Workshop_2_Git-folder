@@ -33,9 +33,9 @@ public class IPL_Batsman_CSV {
 //
 	@CsvBindByName(column = "SR", required = true)
 	public String sr;
-//
-//	@CsvBindByName(column = "100", required = true)
-//	public int hundreds;
+
+	@CsvBindByName(column = "100", required = true)
+	public int hundreds;
 //
 //	@CsvBindByName(column = "50", required = true)
 //	public int fifties;
@@ -48,6 +48,10 @@ public class IPL_Batsman_CSV {
 
 	public int getPos() {
 		return pos;
+	}
+
+	public int getHundreds() {
+		return hundreds;
 	}
 
 	public String getPlayer() {
@@ -70,6 +74,7 @@ public class IPL_Batsman_CSV {
 	public int getRuns() {
 		return runs;
 	}
+
 //
 //	public int getHs() {
 //		return hs;

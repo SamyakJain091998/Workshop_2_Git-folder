@@ -225,11 +225,22 @@ public class SystemTestClass {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void givenBowlerAndBatsmanDataCSVFile_WhenSortedBasisParameter_ReturnsBestAllRounders() {
 		try {
 			String player = IplAnalyzer.returnsBestAllRounders(IPL_BATTING_SHEET, IPL_BOWLING_SHEET);
 			Assert.assertEquals("Andre Russell", player);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void givenBatsmanDataCSVFile_WhenSorted_ReturnsPlayerWithMaxHundredsAndBestAvg() {
+		try {
+			String playerName = IplAnalyzer.returnsMaxHundredsScorerAndBestAveragePlayer(IPL_BATTING_SHEET);
+			Assert.assertEquals("David Warner", playerName);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
