@@ -35,13 +35,17 @@ public class IPL_Bowling_CSV {
 		return pos;
 	}
 
+	public int getWickets() {
+		return wkts;
+	}
+
 	public String getPlayer() {
 		return player;
 	}
 
 	public String getAvg() {
-		if(!("-".equals(avg))) {
-			return avg;	
+		if (!("-".equals(avg))) {
+			return avg;
 		}
 		return "1000";
 	}
@@ -67,7 +71,7 @@ public class IPL_Bowling_CSV {
 	public int fiveWicketHaul;
 
 	public double FiveWicketHaulAndFourWicketHaulStrikingRate() {
-		double strikeRate = fourWicketHaul*4 + fiveWicketHaul*5;
+		double strikeRate = fourWicketHaul * 4 + fiveWicketHaul * 5;
 		if (wkts == 0) {
 			return 0;
 		}
