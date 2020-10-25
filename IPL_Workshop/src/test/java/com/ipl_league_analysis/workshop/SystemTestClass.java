@@ -199,11 +199,26 @@ public class SystemTestClass {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void givenBowlerDataCSVFile_WhenSortedBasisMaxWicketsAndBestAverage_ReturnsBestPlayer() {
 		try {
 			String playerName = IplAnalyzer.returnsBestWicketTakerAndBowlingAveragePlayer(IPL_BOWLING_SHEET);
 			Assert.assertEquals("Imran Tahir", playerName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void givenBowlerDataCSVFile_WhenSortedBasisBestBattingAndBowlingAverages_ReturnsThePlayers() {
+		try {
+			List<String> players = IplAnalyzer.returnsBestBowlingAndBattingAveragePlayers(IPL_BATTING_SHEET,
+					IPL_BOWLING_SHEET);
+
+			Assert.assertEquals("MS Dhoni", players.get(0));
+			Assert.assertEquals("Prasidh Krishna", players.get(1));
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
