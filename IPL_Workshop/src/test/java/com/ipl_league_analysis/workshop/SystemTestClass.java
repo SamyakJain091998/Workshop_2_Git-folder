@@ -166,12 +166,22 @@ public class SystemTestClass {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void given_Bowler_Data_CSV_File_Returns_Player_With_Best_Economy_Rate() {
 		try {
 			String playerName = IplAnalyzer.returnsBestEconomyRatePlayer(IPL_BOWLING_SHEET);
-
 			Assert.assertEquals("Ben Cutting", playerName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void givenBowlerDataCSVFile_WhenSortedBasis5wAnd4w_ReturnsPlayerWithBestStrikingRate() {
+		try {
+			String playerName = IplAnalyzer.returnsBestWicketHaulStrikeRatePlayer(IPL_BOWLING_SHEET);
+			Assert.assertEquals("Alzarri Joseph", playerName);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

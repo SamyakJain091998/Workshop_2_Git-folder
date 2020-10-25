@@ -242,6 +242,23 @@ public class IPLAnalyzerClass {
 		}
 	}
 
+	public String returnsBestWicketHaulStrikeRatePlayer(String csvFilePath) throws CSVException, IPLException {
+		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
+			ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
+			IPLBowlerList = csvBuilder.returnsListToTheLoadingFunction(reader, IPL_Bowling_CSV.class);
+
+			Comparator<IPL_Bowling_CSV> iplComparator = Comparator
+					.comparing(IPL_Bowling_CSV::FiveWicketHaulAndFourWicketHaulStrikingRate);
+
+			return getSortedDataBasisParameter(iplComparator, IPLBowlerList, IPL_Bowling_CSV.class);
+		} catch (IOException e) {
+			// TODO: handle exception
+			throw new IPLException(e.getMessage(), IPLException.ExceptionType.FILE_PROBLEM);
+		} catch (RuntimeException e) {
+			throw new IPLException(e.getMessage(), IPLException.ExceptionType.CSV_FILE_INTERNAL_ISSUES);
+		}
+	}
+
 	private <E> String getSortedDataBasisParameter(Comparator<E> iplComparator, List<E> processedList,
 			Class<E> classType) throws IPLException {
 		// TODO Auto-generated method stub

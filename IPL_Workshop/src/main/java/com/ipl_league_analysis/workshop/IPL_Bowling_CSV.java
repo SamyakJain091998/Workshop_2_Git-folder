@@ -22,8 +22,8 @@ public class IPL_Bowling_CSV {
 //	@CsvBindByName(column = "Runs", required = true)
 //	public int runs;
 //
-//	@CsvBindByName(column = "Wkts", required = true)
-//	public int wkts;
+	@CsvBindByName(column = "Wkts", required = true)
+	public int wkts;
 //
 //	@CsvBindByName(column = "BBI", required = true)
 //	public int bbi;
@@ -45,7 +45,7 @@ public class IPL_Bowling_CSV {
 
 	@CsvBindByName(column = "Econ", required = true)
 	public double econ;
-//
+
 	@CsvBindByName(column = "SR", required = true)
 	public String sr;
 
@@ -57,12 +57,23 @@ public class IPL_Bowling_CSV {
 		return econ;
 	}
 
-//	@CsvBindByName(column = "4w", required = true)
-//	public int fourWicketHaul;
-//
-//	@CsvBindByName(column = "6w", required = true)
-//	public int sixWicketHaul;
+	@CsvBindByName(column = "4w", required = true)
+	public int fourWicketHaul;
 
+	@CsvBindByName(column = "5w", required = true)
+	public int fiveWicketHaul;
+
+	public double FiveWicketHaulAndFourWicketHaulStrikingRate() {
+		double strikeRate = fourWicketHaul*4 + fiveWicketHaul*5;
+		if (wkts == 0) {
+			return 0;
+		}
+		if (strikeRate != 0) {
+			strikeRate = strikeRate / wkts;
+			return strikeRate;
+		}
+		return 0;
+	}
 //	@Override
 //	public String toString() {
 //		return "IPL_Bowling_CSV [player=" + player + ", mat=" + mat + ", inns=" + inns + ", ov=" + ov + ", runs=" + runs
