@@ -259,6 +259,25 @@ public class IPLAnalyzerClass {
 		}
 	}
 
+	public String returnsBestBowlingAverageAndStrikeRatePlayer(String csvFilePath) throws CSVException, IPLException {
+		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
+			ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
+			IPLBowlerList = csvBuilder.returnsListToTheLoadingFunction(reader, IPL_Bowling_CSV.class);
+
+			Comparator<IPL_Bowling_CSV> iplComparator = Comparator.comparing(IPL_Bowling_CSV::getAvg)
+					.thenComparing(IPL_Bowling_CSV::getSr);
+//					.thenComparing(IPL_Bowling_CSV::getSr);
+
+			return getSortedDataBasisParameter(iplComparator, IPLBowlerList, IPL_Bowling_CSV.class);
+		} catch (IOException e) {
+			// TODO: handle exception
+			throw new IPLException(e.getMessage(), IPLException.ExceptionType.FILE_PROBLEM);
+		} catch (RuntimeException e) {
+			throw new IPLException(e.getMessage(), IPLException.ExceptionType.CSV_FILE_INTERNAL_ISSUES);
+		}
+		// TODO Auto-generated method stub
+	}
+
 	private <E> String getSortedDataBasisParameter(Comparator<E> iplComparator, List<E> processedList,
 			Class<E> classType) throws IPLException {
 		// TODO Auto-generated method stub
@@ -266,12 +285,19 @@ public class IPLAnalyzerClass {
 			System.out.println("here");
 			throw new IPLException("No Census Data", IPLException.ExceptionType.NO_CENSUS_DATA);
 		}
+
 		this.sortList(iplComparator, processedList);
+
 		if (classType.equals(IPL_Batsman_CSV.class)) {
 			return IPLBatsmanList.get(0).getPlayer();
 		} else {
-			return IPLBowlerList.get(0).getPlayer();
+			for (int i = IPLBowlerList.size() - 1; i >= 0; i--) {
+				if (!("1000".equals(IPLBowlerList.get(i).getAvg()))) {
+					return IPLBowlerList.get(i).getPlayer();
+				}
+			}
 		}
+		return null;
 	}
 
 	private <E> void sortList(Comparator<E> iplComparator, List<E> givenList) {
@@ -285,6 +311,7 @@ public class IPLAnalyzerClass {
 					givenList.set(j + 1, (E) iplParameter1);
 				}
 			}
+
 		}
 		// TODO Auto-generated method stub
 	}

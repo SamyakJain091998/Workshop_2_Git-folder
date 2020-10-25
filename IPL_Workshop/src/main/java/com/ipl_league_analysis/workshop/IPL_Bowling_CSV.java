@@ -40,7 +40,10 @@ public class IPL_Bowling_CSV {
 	}
 
 	public String getAvg() {
-		return avg;
+		if(!("-".equals(avg))) {
+			return avg;	
+		}
+		return "1000";
 	}
 
 	@CsvBindByName(column = "Econ", required = true)
