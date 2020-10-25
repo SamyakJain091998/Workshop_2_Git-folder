@@ -177,6 +177,39 @@ public class IPLAnalyzerClass {
 		return playerName;
 	}
 
+	public String returnsBestAllRounders(String iplBattingSheet, String iplBowlingSheet) {
+		// TODO Auto-generated method stub
+		Iterator<IPL_Batsman_CSV> csvBatsmanIterator = returnsIteratorOfCSVFile(iplBattingSheet, IPL_Batsman_CSV.class);
+		Iterator<IPL_Bowling_CSV> csvBowlerIterator = null;
+
+		IPL_Batsman_CSV batsmanObj = null;
+		IPL_Bowling_CSV bowlerObj = null;
+
+		double aggregateSum = -1;
+		String bestAllRounder = "";
+
+		while (csvBatsmanIterator.hasNext()) {
+			csvBowlerIterator = returnsIteratorOfCSVFile(iplBowlingSheet, IPL_Bowling_CSV.class);
+			batsmanObj = csvBatsmanIterator.next();
+			String playerName = batsmanObj.getPlayer();
+			int runs = batsmanObj.getRuns();
+			while (csvBowlerIterator.hasNext() && runs != 0) {
+				bowlerObj = csvBowlerIterator.next();
+				if (bowlerObj.getPlayer().equals(playerName)) {
+					int wickets = bowlerObj.getWickets();
+					if (wickets != 0) {
+						double localSum = wickets * 0.5 + runs * 0.5;
+						if (localSum > aggregateSum) {
+							aggregateSum = localSum;
+							bestAllRounder = playerName;
+						}
+					}
+				}
+			}
+		}
+		return bestAllRounder;
+	}
+
 	public <E> Iterator<E> returnsIteratorOfCSVFile(String csvFilePath, Class classType) {
 		try {
 			Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));
