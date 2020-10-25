@@ -24,22 +24,22 @@ public class IPL_Batsman_CSV {
 //
 //	@CsvBindByName(column = "HS", required = true)
 //	public int hs;
-//
+
 	@CsvBindByName(column = "Avg", required = true)
 	public String avg;
-//
+
 	@CsvBindByName(column = "BF", required = true)
 	public int bf;
-//
+
 	@CsvBindByName(column = "SR", required = true)
 	public String sr;
 
 	@CsvBindByName(column = "100", required = true)
 	public int hundreds;
-//
-//	@CsvBindByName(column = "50", required = true)
-//	public int fifties;
-//
+
+	@CsvBindByName(column = "50", required = true)
+	public int fifties;
+
 	@CsvBindByName(column = "4s", required = true)
 	public int fours;
 
@@ -109,6 +109,10 @@ public class IPL_Batsman_CSV {
 
 	public int getSixes() {
 		return sixes;
+	}
+
+	public int numberOfCenturiesPlusHalfCenturies() {
+		return hundreds + fifties;
 	}
 //
 //	@Override

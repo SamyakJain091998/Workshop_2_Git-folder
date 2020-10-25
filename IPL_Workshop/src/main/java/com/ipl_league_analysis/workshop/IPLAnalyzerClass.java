@@ -370,6 +370,24 @@ public class IPLAnalyzerClass {
 		}
 	}
 
+	public String returnsZeroHundredsAndFifitiesScorerButBestAveragePlayer(String csvFilePath)
+			throws CSVException, IPLException {
+		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
+			ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
+			IPLBatsmanList = csvBuilder.returnsListToTheLoadingFunction(reader, IPL_Batsman_CSV.class);
+
+			Comparator<IPL_Batsman_CSV> iplComparator = Comparator
+					.comparing(IPL_Batsman_CSV::numberOfCenturiesPlusHalfCenturies).reversed();
+
+			return getSortedDataBasisParameter(iplComparator, IPLBatsmanList, IPL_Batsman_CSV.class);
+		} catch (IOException e) {
+			// TODO: handle exception
+			throw new IPLException(e.getMessage(), IPLException.ExceptionType.FILE_PROBLEM);
+		} catch (RuntimeException e) {
+			throw new IPLException(e.getMessage(), IPLException.ExceptionType.CSV_FILE_INTERNAL_ISSUES);
+		}
+	}
+
 	private <E> String getSortedDataBasisParameter(Comparator<E> iplComparator, List<E> processedList,
 			Class<E> classType) throws IPLException {
 		// TODO Auto-generated method stub
@@ -380,6 +398,8 @@ public class IPLAnalyzerClass {
 		this.sortList(iplComparator, processedList);
 
 		if (classType.equals(IPL_Batsman_CSV.class)) {
+			System.out.println(IPLBatsmanList.get(0).numberOfCenturiesPlusHalfCenturies());
+			System.out.println(IPLBatsmanList.get(0).getAvg());
 			return IPLBatsmanList.get(0).getPlayer();
 		} else {
 			return IPLBowlerList.get(0).getPlayer();
